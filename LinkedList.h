@@ -31,6 +31,7 @@ public:
     void Paste();
     void Copy();
     void InsertWithReplacement();
+    void addToStack();
 };
 
 #endif

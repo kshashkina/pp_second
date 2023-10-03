@@ -432,3 +432,27 @@ void LinkedList::InsertWithReplacement() {
         cout << "Text was inserted!" << endl;
     }
 }
+
+void LinkedList::addToStack() {
+    LinkedList newList;
+    Node* current = head;
+
+    while (current != nullptr) {
+        Node* newNode = createNode(current->data);
+
+        if (newList.head == nullptr) {
+            newList.head = newNode;
+        } else {
+            Node* temp = newList.head;
+            while (temp->next != nullptr) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+        }
+
+        current = current->next;
+    }
+
+    Stack.push(newList);
+    stackSize++;
+}
