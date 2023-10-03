@@ -36,8 +36,10 @@ int main() {
                 list.Delete();
                 break;
             case 9:
+                list.undo();
                 break;
             case 10:
+                list.redo();
                 break;
             case 11:
                 list.Cut();

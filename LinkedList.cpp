@@ -12,7 +12,8 @@ LinkedList::LinkedList() {
 LinkedList::~LinkedList() {
     clear();
 }
-std::stack<LinkedList> Stack;
+std::list<LinkedList*> undoList;
+std::list<LinkedList*> redoList;
 
 
 
@@ -78,7 +79,9 @@ void LinkedList::insertStringAtPosition(const char* str, int line, int index) {
             head = newNode;
         }
         prev = newNode;
-    }}
+    }
+    addToStack();
+}
 
 void LinkedList::displayList() {
     Node* current = head;
@@ -105,10 +108,12 @@ void LinkedList::appendText() {
     for (char c : inputLine) {
         insertNodeEnd(c);
     }
+    addToStack();
     cout << "Your word has been saved!" << endl;}
 
 void LinkedList::addNewLine() {
     insertNodeEnd('\n');
+    addToStack();
     cout << "New line has been added!" << endl;
 }
 
@@ -244,6 +249,7 @@ void LinkedList::Delete() {
         cout<<"No text to delete"<<endl;
     } else{
         cout<<"The text was deleted"<<endl;
+        addToStack();
     }
 }
 
@@ -291,6 +297,7 @@ void LinkedList::Cut() {
         cout << "No text to cut" << endl;
     } else {
         cout << "The text was cut" << endl;
+        addToStack();
     }
 }
 
@@ -339,6 +346,7 @@ void LinkedList::Paste() {
         cout << "No location to paste" << endl;
     } else {
         cout << "Text was pasted" << endl;
+        addToStack();
     }
 }
 
@@ -378,6 +386,7 @@ void LinkedList::Copy() {
         cout << "No text to copy" << endl;
     } else {
         cout << "The text was copied" << endl;
+        addToStack();
     }
 }
 void LinkedList::InsertWithReplacement() {
@@ -430,29 +439,65 @@ void LinkedList::InsertWithReplacement() {
         cout << "No location to insert" << endl;
     } else {
         cout << "Text was inserted!" << endl;
+        addToStack();
     }
 }
 
 void LinkedList::addToStack() {
-    LinkedList newList;
+    LinkedList* newList = new LinkedList;
     Node* current = head;
+
+    // Create a tail pointer to optimize node addition
+    Node* newTail = nullptr;
 
     while (current != nullptr) {
         Node* newNode = createNode(current->data);
 
-        if (newList.head == nullptr) {
-            newList.head = newNode;
+        if (newList->head == nullptr) {
+            newList->head = newNode;
+            newTail = newNode;
         } else {
-            Node* temp = newList.head;
-            while (temp->next != nullptr) {
-                temp = temp->next;
-            }
-            temp->next = newNode;
+            newTail->next = newNode;
+            newTail = newNode;
         }
 
         current = current->next;
     }
 
-    Stack.push(newList);
+    if (undoList.size() > 3){
+        undoList.pop_front();
+    }
+
+
+    undoList.push_back(newList);
     stackSize++;
+}
+
+
+void LinkedList::undo() {
+    if (undoList.size() > 1) {
+        if (redoList.size() > 3){
+            redoList.pop_front();
+        }
+        redoList.push_back(undoList.back());
+        undoList.pop_back();
+        *this = *undoList.back();
+        cout << "Undo successful." << endl;
+    } else {
+        cout << "Nothing to undo." << endl;
+    }
+}
+
+void LinkedList::redo(){
+    if (redoList.size() > 1) {
+        if (undoList.size() > 3){
+            undoList.pop_front();
+        }
+        undoList.push_back(redoList.back());
+        redoList.pop_back();
+        *this = *redoList.back();
+        cout << "Redo successful." << endl;
+    } else {
+        cout << "Nothing to redo." << endl;
+    }
 }
