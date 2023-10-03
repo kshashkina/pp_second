@@ -246,3 +246,51 @@ void LinkedList::Delete() {
         cout<<"The text was deleted"<<endl;
     }
 }
+
+void LinkedList::Cut() {
+    buffer.clear();
+    int line, index, numSymbolsToCut;
+    cout << "Choose line, index, and number of symbols: ";
+    cin >> line >> index >> numSymbolsToCut;
+
+    Node* current = head;
+    Node* previous = nullptr;
+    int currentLine = 0;
+    int currentIndex = 0;
+    bool cut = false;
+
+    while (current != nullptr) {
+        if (currentLine == line && currentIndex == index) {
+            for (int i = 0; i < numSymbolsToCut && current != nullptr; ++i) {
+                buffer.insertNodeEnd(current->data);
+                Node* temporary = current;
+                current = current->next;
+                delete temporary;
+            }
+
+            if (previous != nullptr) {
+                previous->next = current;
+            } else {
+                head = current;
+            }
+
+            cut = true;
+            break;
+        }
+        if (current->data == '\n') {
+            currentLine++;
+            currentIndex = 0;
+        } else {
+            currentIndex++;
+        }
+
+        previous = current;
+        current = current->next;
+    }
+    if (!cut) {
+        cout << "No text to cut" << endl;
+    } else {
+        cout << "The text was cut" << endl;
+    }
+
+}

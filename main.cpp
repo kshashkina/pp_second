@@ -35,6 +35,13 @@ int main() {
             case 8:
                 list.Delete();
                 break;
+            case 9:
+                break;
+            case 10:
+                break;
+            case 11:
+                list.Cut();
+                break;
             default:
                 return 0;
         }

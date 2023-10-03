@@ -27,6 +27,7 @@ public:
     void insertTextAtPosition();
     void searchSubstring();
     void Delete();
+    void Cut();
 };
 
 #endif
