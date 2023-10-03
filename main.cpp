@@ -53,6 +53,9 @@ int main() {
             case 14:
                 list.InsertWithReplacement();
                 break;
+            case 15:
+                list.cursor();
+                break;
             default:
                 return 0;
         }

@@ -55,6 +55,8 @@ public:
 
     void redo();
 
+    void cursor();
+
 
 
 };

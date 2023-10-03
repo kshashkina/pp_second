@@ -343,7 +343,13 @@ void LinkedList::Paste() {
     }
 
     if (!pasted) {
-        cout << "No location to paste" << endl;
+        Node *currentEnd = buffer.head;
+        while (currentEnd != nullptr){
+            insertNodeEnd(currentEnd->data);
+            currentEnd = currentEnd->next;
+        }
+        cout << "Text was pasted" << endl;
+        addToStack();
     } else {
         cout << "Text was pasted" << endl;
         addToStack();
@@ -499,5 +505,39 @@ void LinkedList::redo(){
         cout << "Redo successful." << endl;
     } else {
         cout << "Nothing to redo." << endl;
+    }
+}
+
+void LinkedList::cursor() {
+    int line, index;
+    cout << "Choose line and index: ";
+    cin >> line >> index;
+
+    Node* current = head;
+    int currentLine = 0;
+    int currentIndex = 0;
+    bool found = false;
+
+    while (current != nullptr){
+        if (currentLine == line && currentIndex == index){
+            Node* cursor = createNode('|');
+            cursor->next = current->next;
+            current->next = cursor;
+            found = true;
+            break;
+        }
+        if (current->data == '\n') {
+            currentLine++;
+            currentIndex = 0;
+        } else {
+            currentIndex++;
+        }
+        current = current->next;
+    }
+    if(!found){
+        cout<<"No place for cursor("<< endl;
+    }
+    else{
+        cout<<"The cursor was placed!"<< endl;
     }
 }
