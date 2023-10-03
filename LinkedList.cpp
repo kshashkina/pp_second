@@ -292,5 +292,91 @@ void LinkedList::Cut() {
     } else {
         cout << "The text was cut" << endl;
     }
+}
 
+void LinkedList::Paste() {
+    int line, index;
+    cout << "Choose line and index: ";
+    cin >> line >> index;
+
+    Node *current = head;
+    Node *previous = nullptr;
+    int currentLine = 0;
+    int currentIndex = 0;
+    bool pasted = false;
+
+    while (current != nullptr) {
+        if (currentLine == line && currentIndex == index) {
+            Node *listCutCurrent = buffer.head;
+            while (listCutCurrent != nullptr) {
+                Node *newNode = createNode(listCutCurrent->data);
+                if (previous != nullptr) {
+                    previous->next = newNode;
+                } else {
+                    head = newNode;
+                }
+                newNode->next = current;
+                previous = newNode;
+                listCutCurrent = listCutCurrent->next;
+            }
+
+            pasted = true;
+            break;
+        }
+
+        if (current->data == '\n') {
+            currentLine++;
+            currentIndex = 0;
+        } else {
+            currentIndex++;
+        }
+
+        previous = current;
+        current = current->next;
+    }
+
+    if (!pasted) {
+        cout << "No location to paste" << endl;
+    } else {
+        cout << "Text was pasted" << endl;
+    }
+}
+
+void LinkedList::Copy() {
+    buffer.clear();
+    int line, index, numSymbolsToCut;
+    cout << "Choose line, index, and number of symbols: ";
+    cin >> line >> index >> numSymbolsToCut;
+
+    Node* current = head;
+    Node* previous = nullptr;
+    int currentLine = 0;
+    int currentIndex = 0;
+    bool cut = false;
+
+    while (current != nullptr) {
+        if (currentLine == line && currentIndex == index) {
+            for (int i = 0; i < numSymbolsToCut && current != nullptr; ++i) {
+                buffer.insertNodeEnd(current->data);
+                current = current->next;
+            }
+
+            cut = true;
+            break;
+        }
+        if (current->data == '\n') {
+            currentLine++;
+            currentIndex = 0;
+        } else {
+            currentIndex++;
+        }
+
+        previous = current;
+        current = current->next;
+    }
+    if (!cut) {
+        cout << "No text to copy" << endl;
+    } else {
+        cout << "The text was copied" << endl;
+    }
 }

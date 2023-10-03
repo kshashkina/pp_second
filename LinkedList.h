@@ -28,6 +28,8 @@ public:
     void searchSubstring();
     void Delete();
     void Cut();
+    void Paste();
+    void Copy();
 };
 
 #endif

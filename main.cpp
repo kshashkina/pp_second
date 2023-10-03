@@ -42,6 +42,12 @@ int main() {
             case 11:
                 list.Cut();
                 break;
+            case 12:
+                list.Paste();
+                break;
+            case 13:
+                list.Copy();
+                break;
             default:
                 return 0;
         }
