@@ -48,6 +48,9 @@ int main() {
             case 13:
                 list.Copy();
                 break;
+            case 14:
+                list.InsertWithReplacement();
+                break;
             default:
                 return 0;
         }

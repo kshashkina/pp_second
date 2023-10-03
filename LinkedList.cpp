@@ -380,3 +380,55 @@ void LinkedList::Copy() {
         cout << "The text was copied" << endl;
     }
 }
+void LinkedList::InsertWithReplacement() {
+    int line, index;
+    cout << "Choose line and index: ";
+    cin >> line >> index;
+
+    string newText;
+    cin.ignore();
+    cout << "Write text: ";
+    getline(cin, newText);
+
+    Node* current = head;
+    int currentLine = 0;
+    int currentIndex = 0;
+    bool inserted = false;
+
+    while (current != nullptr) {
+        if (currentLine == line && currentIndex == index) {
+            for (int i = 0; newText[i] != '\0'; ++i) {
+                if (current->next == nullptr) {
+                    current->data = newText[i];
+                    Node *newNode = createNode(newText[i+1]);
+                    if (currentIndex == 0) {
+                        head = newNode;
+                    } else {
+                        current->next = newNode;
+                        current = current->next;
+                    }
+                } else {
+                    current->data = newText[i];
+                    current = current->next;
+                }
+            }
+
+            inserted = true;
+            break;
+        }
+
+        if (current->data == '\n') {
+            currentLine++;
+            currentIndex = 0;
+        } else {
+            currentIndex++;
+        }
+        current = current->next;
+    }
+
+    if (!inserted) {
+        cout << "No location to insert" << endl;
+    } else {
+        cout << "Text was inserted!" << endl;
+    }
+}

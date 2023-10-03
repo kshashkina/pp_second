@@ -30,6 +30,7 @@ public:
     void Cut();
     void Paste();
     void Copy();
+    void InsertWithReplacement();
 };
 
 #endif
