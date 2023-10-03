@@ -26,6 +26,7 @@ public:
     void readFromFile();
     void insertTextAtPosition();
     void searchSubstring();
+    void Delete();
 };
 
 #endif

@@ -32,6 +32,9 @@ int main() {
             case 7:
                 list.searchSubstring();
                 break;
+            case 8:
+                list.Delete();
+                break;
             default:
                 return 0;
         }

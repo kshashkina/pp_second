@@ -105,7 +105,6 @@ void LinkedList::appendText() {
     for (char c : inputLine) {
         insertNodeEnd(c);
     }
-    addToStack(head);
     cout << "Your word has been saved!" << endl;}
 
 void LinkedList::addNewLine() {
@@ -202,5 +201,48 @@ void LinkedList::searchSubstring() {
     }
 }
 
+void LinkedList::Delete() {
+    int line, index, numSymbolsToDelete;
+    cout << "Choose line, index, and number of symbols: ";
+    cin >> line >> index >> numSymbolsToDelete;
 
 
+    Node* current = head;
+    Node* previous = nullptr;
+    int currentLine = 0;
+    int currentIndex = 0;
+    bool found = false;
+
+    while (current != nullptr){
+        if (currentLine == line && currentIndex == index){
+            for (int i = 0; i < numSymbolsToDelete && current != nullptr; ++i) {
+                Node* temporary = current;
+                current = current->next;
+                delete temporary;
+            }
+
+            if (previous != nullptr){
+                previous->next = current;}
+            else{
+                head = current;
+            }
+
+            found = true;
+            break;
+        }
+        if (current->data == '\n'){
+            currentLine++;
+            currentIndex = 0;
+        } else{
+            currentIndex++;
+        }
+
+        previous = current;
+        current = current->next;
+    }
+    if (!found){
+        cout<<"No text to delete"<<endl;
+    } else{
+        cout<<"The text was deleted"<<endl;
+    }
+}
